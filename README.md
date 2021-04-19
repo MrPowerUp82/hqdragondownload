@@ -9,3 +9,5 @@
   A nova versão do script baixa e transforma em pdf.
   “hq_all.py” - Baixa todos os capítulos.
   “hq_one.py” - Baixa apenas um.
+# Biblioteca
+requests fpdf lxml
