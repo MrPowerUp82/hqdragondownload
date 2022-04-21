@@ -51,6 +51,7 @@ if args.search:
                 print('output recebe apenas o nome do arquivo.')
                 exit()
         file_name = args.output if args.output != None else datetime.datetime.now().strftime('%d_%m_%Y__%H_%M_%S')
+        print("[+]Downloading...[+]")
         for idx,cap in enumerate(caps):
             if args.cap != None:
                 if int(cap.split('/')[-1]) not in [int(x) for x in args.cap if x != ',']:
@@ -84,6 +85,8 @@ if args.search:
                         os.remove(path+'/'+img)
                     os.rmdir(path)
 
+                print("[+]Finished...[+]")
+
 elif args.url:
     page = requests.get(headers=headers, url=args.url)
     tree = html.fromstring(page.content)
@@ -94,6 +97,7 @@ elif args.url:
             print('output recebe apenas o nome do arquivo.')
             exit()
     file_name = args.output if args.output != None else datetime.datetime.now().strftime('%d_%m_%Y__%H_%M_%S')
+    print("[+]Downloading...[+]")
     for idx,cap in enumerate(caps):
         if args.cap != None:
             if int(cap.split('/')[-1]) not in [int(x) for x in args.cap if x != ',']:
@@ -126,6 +130,8 @@ elif args.url:
                 for img in imgs:
                     os.remove(path+'/'+img)
                 os.rmdir(path)
+
+            print("[+]Finished...[+]")
 
 else:
     template ="""
