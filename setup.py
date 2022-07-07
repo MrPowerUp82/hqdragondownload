@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = 'hqdragondownload',
-    version = '1.0.3',
+    version = '1.1.0',
     author = 'MrPowerUp',
     author_email = 'gustavohenrique8282@hotmail.com',
     packages = ['hqdragon'],

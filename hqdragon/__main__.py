@@ -65,7 +65,7 @@ if args.search:
                 adj_file = "0"+pag if int(pag) < 10 else pag
                 img_src=tree.xpath(f'//img[@pag="{pag}"]/@src')[0]
                 img_data = requests.get(img_src,headers=headers).content
-                with open(path_name+'/'+f'image{pag}.jpg', 'wb') as img:
+                with open(path_name+'/'+f'image{adj_file}.jpg', 'wb') as img:
                     img.write(img_data)
 
                 time.sleep(1.5)
@@ -111,7 +111,7 @@ elif args.url:
             adj_file = "0"+pag if int(pag) < 10 else pag
             img_src=tree.xpath(f'//img[@pag="{pag}"]/@src')[0]
             img_data = requests.get(img_src,headers=headers).content
-            with open(path_name+'/'+f'image{pag}.jpg', 'wb') as img:
+            with open(path_name+'/'+f'image{adj_file}.jpg', 'wb') as img:
                 img.write(img_data)
 
             time.sleep(1.5)
