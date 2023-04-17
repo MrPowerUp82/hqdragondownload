@@ -21,9 +21,11 @@ my_parse.add_argument("--url", action="store", type=str, help="Url da hq.")
 my_parse.add_argument("--output", action="store", type=str, help="Nome de saida do pdf.")
 my_parse.add_argument("--option", action="store", type=int, help="Opção da pesquisa.")
 my_parse.add_argument("--no-pdf", action="store", type=bool, help="Salva apenas as imagens.", default=False)
-my_parse.add_argument("--cap", action="store", type=list, help="Define os capitulos.")
+my_parse.add_argument("--cap", action="store", type=str, help="Define os capitulos.")
 
 args = my_parse.parse_args()
+
+args.cap = args.cap.split(',')
 
 if args.search:
     page = requests.get(headers=headers, url=url+query_search+args.search)
@@ -53,6 +55,7 @@ if args.search:
         file_name = args.output if args.output != None else datetime.datetime.now().strftime('%d_%m_%Y__%H_%M_%S')
         print("[+]Downloading...[+]")
         for idx,cap in enumerate(caps):
+            cap_n = cap.split('/')[-1]
             if args.cap != None:
                 if int(cap.split('/')[-1]) not in [int(x) for x in args.cap if x != ',']:
                     continue
@@ -85,7 +88,7 @@ if args.search:
                         os.remove(path+'/'+img)
                     os.rmdir(path)
 
-                print("[+]Finished...[+]")
+                print(f"[+]Finished Cap. {cap_n}[+]")
 
 elif args.url:
     page = requests.get(headers=headers, url=args.url)
@@ -99,6 +102,7 @@ elif args.url:
     file_name = args.output if args.output != None else datetime.datetime.now().strftime('%d_%m_%Y__%H_%M_%S')
     print("[+]Downloading...[+]")
     for idx,cap in enumerate(caps):
+        cap_n = cap.split('/')[-1]
         if args.cap != None:
             if int(cap.split('/')[-1]) not in [int(x) for x in args.cap if x != ',']:
                 continue
@@ -131,7 +135,7 @@ elif args.url:
                     os.remove(path+'/'+img)
                 os.rmdir(path)
 
-            print("[+]Finished...[+]")
+            print(f"[+]Finished Cap. {cap_n}[+]")
 
 else:
     template ="""
