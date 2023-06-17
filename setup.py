@@ -2,12 +2,12 @@ from setuptools import setup
 
 setup(
     name = 'hqdragondownload',
-    version = '1.1.1',
+    version = '1.1.3',
     author = 'MrPowerUp',
     author_email = 'gustavohenrique8282@hotmail.com',
     packages = ['hqdragon'],
     description = 'CLI para baixar hqs no site.',
-    long_description = 'CLI para baixar hqs no site.',
+    long_description = 'CLI para baixar hqs no site.\npython3 -m pip install hqdragondownload\npython3 -m hqdragon',
     url = 'https://github.com/MrPowerUp82/hqdragondownload',
     project_urls = {
         'Código fonte': 'https://github.com/MrPowerUp82/hqdragondownload',
@@ -23,5 +23,5 @@ setup(
         'Topic :: Software Development :: Internationalization',
         'Topic :: Scientific/Engineering :: Physics'
     ],
-    install_requires=['lxml==4.8.0','requests==2.27.1','fpdf==1.7.2']
+    install_requires=['lxml==4.8.0','requests==2.27.1','fpdf==1.7.2','Pillow==9.3.0']
 )

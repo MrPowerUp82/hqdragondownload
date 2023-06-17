@@ -1,16 +1,16 @@
-import argparse
-import requests
+import argparse, requests, datetime, os, time
 from lxml import html
 from fpdf import FPDF
-import datetime
-import os
-import time
+from PIL import Image
+
 
 headers= {
     "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
 }
 
 url = "https://hqdragon.com/"
+
+BYPASS_FORMAT_FPDF = ['jpeg', 'png', 'jpg']
 
 query_search = "pesquisa?nome_hq="
 
@@ -25,7 +25,19 @@ my_parse.add_argument("--cap", action="store", type=str, help="Define os capitul
 
 args = my_parse.parse_args()
 
-args.cap = args.cap.split(',')
+if args.cap:
+    args.cap = args.cap.split(',')
+
+
+def test_image(image: str)->bool:
+    try:
+        with Image.open(image) as img:
+            if img.height:
+                return True
+            else:
+                return False
+    except:
+        return False
 
 if args.search:
     page = requests.get(headers=headers, url=url+query_search+args.search)
@@ -71,16 +83,32 @@ if args.search:
                 with open(path_name+'/'+f'image{adj_file}.jpg', 'wb') as img:
                     img.write(img_data)
 
+                try:
+                    image_test = Image.open(path_name+'/'+f'image{adj_file}.jpg')
+                    if image_test.format.lower() not in BYPASS_FORMAT_FPDF:
+                        image_test.convert('RGB').save(path_name+'/'+f'image{adj_file}_1.jpg', 'jpeg')
+                        image_test.close()
+                        os.remove(path_name+'/'+f'image{adj_file}.jpg')
+                        os.rename(path_name+'/'+f'image{adj_file}_1.jpg', path_name+'/'+f'image{adj_file}.jpg')
+                except:
+                    pass
+
                 time.sleep(1.5)
 
             if args.no_pdf == False or args.no_pdf == None:
                 paths = [x for x in os.listdir('.') if file_name in x and '.pdf' not in x]
+                paths.sort()
                 for path in paths:
                     imgs = os.listdir(path)
+                    imgs.sort()
                     pdf = FPDF()
                     for img in imgs:
                         pdf.add_page()
-                        pdf.image(path+'/'+img,0,0,210,297)
+                        if test_image(path+'/'+img):
+                            pdf.image(path+'/'+img,0,0,210,297)
+                        else:
+                            pdf.set_font("Arial", "B", 16)
+                            pdf.cell(40, 10, "Imagem corrompida.")
                     pdf.output(f'{path}.pdf',"F")
                 for path in paths:
                     imgs = os.listdir(path)
@@ -118,16 +146,32 @@ elif args.url:
             with open(path_name+'/'+f'image{adj_file}.jpg', 'wb') as img:
                 img.write(img_data)
 
+            try:
+                image_test = Image.open(path_name+'/'+f'image{adj_file}.jpg')
+                if image_test.format.lower() not in BYPASS_FORMAT_FPDF:
+                    image_test.convert('RGB').save(path_name+'/'+f'image{adj_file}_1.jpg', 'jpeg')
+                    image_test.close()
+                    os.remove(path_name+'/'+f'image{adj_file}.jpg')
+                    os.rename(path_name+'/'+f'image{adj_file}_1.jpg', path_name+'/'+f'image{adj_file}.jpg')
+            except:
+                pass
+
             time.sleep(1.5)
 
         if args.no_pdf == False or args.no_pdf == None:
             paths = [x for x in os.listdir('.') if file_name in x and '.pdf' not in x]
+            paths.sort()
             for path in paths:
                 imgs = os.listdir(path)
+                imgs.sort()
                 pdf = FPDF()
                 for img in imgs:
                     pdf.add_page()
-                    pdf.image(path+'/'+img,0,0,210,297)
+                    if test_image(path+'/'+img):
+                        pdf.image(path+'/'+img,0,0,210,297)
+                    else:
+                        pdf.set_font("Arial", "B", 16)
+                        pdf.cell(40, 10, "Imagem corrompida.")
                 pdf.output(f'{path}.pdf',"F")
             for path in paths:
                 imgs = os.listdir(path)

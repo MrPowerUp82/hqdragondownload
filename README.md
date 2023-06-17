@@ -17,6 +17,14 @@
   python .\main.py -h
   ```
 
+## Lib:
+  ```console
+  python3 -m pip install hqdragondownload 
+  ```
+  ```console
+  python3 -m hqdragon
+  ```
+
 ## Argumentos
 | Argumento | Descrição |
 | - | - |
